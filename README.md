@@ -50,7 +50,7 @@ Update credentials in config.py
 
 Run Application
 
-python app.py
+python manage.py runserver
 
 
 Access in Browser
