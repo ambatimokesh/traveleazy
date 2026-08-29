@@ -1,43 +1,45 @@
-
 pipeline {
-    agent any
+agent any
+stages {
 
-    stages {
+    stage('Install Dependencies') {
+        steps {
+            sh '''
+                python3 -m venv venv
 
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                    python3 -m venv venv
-                    ./venv/bin/python -m pip install --upgrade pip
-                    ./venv/bin/pip install Django==5.1.2
-                '''
-            }
-        }
+                ./venv/bin/python -m pip install --upgrade pip
 
-        stage('Django Check') {
-            steps {
-                sh '''
-                    ./venv/bin/python manage.py check
-                '''
-            }
-        }
-
-        stage('Collect Static') {
-            steps {
-                sh '''
-                    ./venv/bin/python manage.py collectstatic --noinput
-                '''
-            }
+                ./venv/bin/pip install Django==5.1.2
+                ./venv/bin/pip install scikit-learn
+            '''
         }
     }
 
-    post {
-        success {
-            echo 'Build successful!'
-        }
-
-        failure {
-            echo 'Build failed!'
+    stage('Django Check') {
+        steps {
+            sh '''
+                ./venv/bin/python manage.py check
+            '''
         }
     }
+
+    stage('Collect Static') {
+        steps {
+            sh '''
+                ./venv/bin/python manage.py collectstatic --noinput
+            '''
+        }
+    }
+}
+
+post {
+    success {
+        echo 'Build successful!'
+    }
+
+    failure {
+        echo 'Build failed!'
+    }
+}
+
 }
