@@ -23,6 +23,11 @@ stages {
             '''
         }
     }
+    stage('Test') { 
+        steps { 
+            sh './venv/bin/python manage.py test' 
+        }
+    }
 
     stage('Collect Static') {
         steps {
@@ -35,11 +40,11 @@ stages {
 
 post {
     success {
-        echo 'Build successful!'
+        echo 'Build and tests passed successfully!'
     }
 
     failure {
-        echo 'Build failed!'
+        echo 'Build or tests failed!'
     }
 }
 
