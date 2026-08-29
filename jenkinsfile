@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                    python3 -m pip install --upgrade pip
+                    pip install Django==5.1.2
+                '''
+            }
+        }
+
+        stage('Django Check') {
+            steps {
+                sh 'python3 manage.py check'
+            }
+        }
+
+        stage('Collect Static') {
+            steps {
+                sh 'python3 manage.py collectstatic --noinput'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build completed successfully!'
+        }
+
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}
