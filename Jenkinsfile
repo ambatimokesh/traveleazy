@@ -11,6 +11,7 @@ stages {
 
                 ./venv/bin/pip install Django==5.1.2
                 ./venv/bin/pip install scikit-learn
+                ./venv/bin/pip install pandas
             '''
         }
     }
